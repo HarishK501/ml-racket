@@ -1,0 +1,9 @@
+#lang racket
+(require "dataframe-adt.rkt")
+
+(define df (make-dataframe "penguins_preprocessed.csv"))
+(define df2 '())
+(define df3 null)
+
+(cond)
+(col-selector df "i_Dream")

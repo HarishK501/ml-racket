@@ -1,0 +1,63 @@
+#lang racket
+
+(require csv-reading)
+
+(define make-galapagos-csv-reader
+  (make-csv-reader-maker
+   '((separator-chars              #\,)
+     (strip-leading-whitespace?  . #t)
+     (strip-trailing-whitespace? . #t))))
+
+(define (all-rows path make-reader)
+  (define next-row (make-reader (open-input-file path)))
+  (define (loop)
+    (define row (next-row))
+    (if (empty? row)
+        '()
+        (cons row (loop))))
+  (loop))
+
+
+(define (index-within-bounds? df i)
+  (and (> n -1) (< n (length df)))
+  )
+
+(define (row-selector df i)
+  (if (index-within-bounds? df i))
+  (list-ref df i))
+
+
+#| (define (string-element-of-list lst str)
+  (findf (lambda (arg) (string=? arg str))
+         lst)
+  )
+|#
+
+(define (feature-index df f)
+  (index-of (row-selector df 0) f)
+  )
+
+(define (col-selector df x)
+  (if (string? x)
+      ;Select by feature name
+      (col-selector df (feature-index df x))
+      ;Select by index
+      (if (null? df)
+          '()
+          (cons (list-ref (car df) x) (col-selector (cdr df) x))
+          ))
+  )
+
+
+#|
+ - unique values in a column
+ - null values
+ - 
+
+|#
+
+(define dataset (all-rows "penguins_preprocessed.csv" make-galapagos-csv-reader))
+
+(col-selector dataset "i_Dream")
+
+
