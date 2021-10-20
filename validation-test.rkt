@@ -134,3 +134,43 @@
       #t
       #f)
   )
+
+(displayln "17.#f (row-selector df 4 1)")
+(with-handlers ([exn:fail? (lambda (v)
+                             ((error-display-handler) (exn-message v) v))])
+  (if (row-selector df 4 1)
+      #t
+      #f)
+  )
+
+(displayln "18.#f (row-selector df 4 -2)")
+(with-handlers ([exn:fail? (lambda (v)
+                             ((error-display-handler) (exn-message v) v))])
+  (if (row-selector df 4 -2)
+      #t
+      #f)
+  )
+
+(displayln "19.#t (row-selector df 4 -1)")
+(with-handlers ([exn:fail? (lambda (v)
+                             ((error-display-handler) (exn-message v) v))])
+  (if (row-selector df 4 -1)
+      #t
+      #f)
+  )
+
+(displayln "20.#t (row-selector df 4 4)")
+(with-handlers ([exn:fail? (lambda (v)
+                             ((error-display-handler) (exn-message v) v))])
+  (if (row-selector df 4 4)
+      #t
+      #f)
+  )
+
+(displayln "21.#t (row-selector df 4 6)")
+(with-handlers ([exn:fail? (lambda (v)
+                             ((error-display-handler) (exn-message v) v))])
+  (if (row-selector df 4 6)
+      #t
+      #f)
+  )

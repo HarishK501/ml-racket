@@ -60,7 +60,7 @@
      )
     )
   
-  (if (and (> i -1) (< i upper-limit))
+  (if (and (> i -1) (<= i upper-limit))
       #t
       ((lambda (i)
          (raise-argument-error 'index-within-bounds? (string-append "[0, " (number->string upper-limit) "].") i)
@@ -79,16 +79,40 @@
       )
   )
 
-(define (row-selector df i [j 0])
-  (cond
-    ((and (not (null? df)) (not (null? (car df))) (index-within-bounds? df i 'r))
-     (list-ref (car df) i))
+(define (row-selector df i [j -1])
 
-    (else
-     (error "Dataframe must not be null.")
-     #f)
-    )
-  )
+      (define (row-selector-helper i)
+      (if (index-within-bounds? df i 'r)
+         (list-ref (car df) i)
+        #f)
+      )
+
+      (define (row-slicer-helper df i j)
+        (if (> i j)
+            '()
+            (cons (row-selector-helper i) (row-slicer-helper df (+ 1 i) j)))
+        
+        )
+      (define row null)
+      (cond
+
+        ((or (null? df) (null? (car df)))
+         (error "Dataframe must not be null."))
+        
+        ((= j -1) (row-selector-helper i))
+
+        ((not (index-within-bounds? df j 'r))
+         #f)
+        
+        ((>= j i)
+          (row-slicer-helper df i j)
+          )
+
+        (else
+         (raise-argument-error 'row-selector (string-append "[" (number->string i) ", " (number->string (cadr df)) "]") j))
+            
+          )
+      )
 
 #| (define (string-element-of-list lst str)
   (findf (lambda (arg) (string=? arg str))

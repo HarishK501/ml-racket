@@ -5,5 +5,6 @@
 (define df (make-dataframe "penguins_preprocessed.csv"))
 ;(define df '())
 ;(define df null)
-(null? (car df))
-(col-selector df "i_Dream")
+;(null? (car df))
+;(col-selector df "i_Dream")
+(row-selector df 4 1)
