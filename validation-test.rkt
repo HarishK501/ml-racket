@@ -2,7 +2,7 @@
 (require "dataframe-adt.rkt")
 
 (define df (make-dataframe "penguins_preprocessed.csv"))
-(define df2 '())
+(define df2 '(() 0 0))
 (define df3 null)
 
 (displayln "Validation Tests \n")
@@ -15,18 +15,18 @@
       #f)
   )
 
-(displayln "2. df2")
+(displayln "2. (null? df2)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if df2
+  (if (null? df2)
       #t
       #f)
   )
 
-(displayln "3. df3")
+(displayln "3. (null? df3)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if df3
+  (if (null? df3)
       #t
       #f)
   )

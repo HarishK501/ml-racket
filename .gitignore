@@ -24,6 +24,7 @@ ipython_config.py
 # DrRacket autosave files
 *.rkt~
 *.rkt.bak
+*.bak
 \#*.rkt#
 \#*.rkt#*#
 
