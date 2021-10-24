@@ -179,14 +179,14 @@
   )
 
 (define (get-class labels i)
-  (car (list-ref labels i))
+  (car (list-ref (car labels) i))
   )
 
 
 #|
  - unique values in a column
  - null values
- - 
+ - pass n m in both test and train dataset
 
 |#
 
