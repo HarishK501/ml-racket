@@ -1,16 +1,17 @@
 #lang racket
 (require "dataframe-adt.rkt")
 
-(define df (make-dataframe "penguins_preprocessed.csv"))
+(define data (make-dataframe "penguins_data.csv"))
+(define labels (make-dataframe "penguins_labels.csv"))
 (define df2 '(() 0 0))
 (define df3 null)
 
 (displayln "Validation Tests \n")
 
-(displayln "1. df")
+(displayln "1. data")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if df
+  (if data
       #t
       #f)
   )
@@ -31,26 +32,26 @@
       #f)
   )
 
-(displayln "4. (row-selector df 1)")
+(displayln "4. (row-selector data 1)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (row-selector df 1)
+  (if (row-selector data 1)
       #t
       #f)
   )
 
-(displayln "5. (row-selector df -1)")
+(displayln "5. (row-selector data -1)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (row-selector df -1)
+  (if (row-selector data -1)
       #t
       #f)
   )
 
-(displayln "6. (row-selector df 400)")
+(displayln "6. (row-selector data 400)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (row-selector df 400)
+  (if (row-selector data 400)
       #t
       #f)
   )
@@ -87,7 +88,7 @@
       #f)
   )
 
-(displayln "11. (col-selector df 1)")
+(displayln "11. (col-selector data 1)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
   (if (col-selector df 1)
@@ -95,7 +96,7 @@
       #f)
   )
 
-(displayln "12. (col-selector df -2)")
+(displayln "12. (col-selector data -2)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
   (if (col-selector df -2)
@@ -103,7 +104,7 @@
       #f)
   )
 
-(displayln "13. (col-selector df \"i_Dream\")")
+(displayln "13. (col-selector data \"i_Dream\")")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
   (if (col-selector df "i_Dream")
@@ -111,7 +112,7 @@
       #f)
   )
 
-(displayln "14. (col-selector df \"abc\")")
+(displayln "14. (col-selector data \"abc\")")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
   (if (col-selector df "abc")
@@ -135,7 +136,7 @@
       #f)
   )
 
-(displayln "17.#f (row-selector df 4 1)")
+(displayln "17.#f (row-selector data 4 1)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
   (if (row-selector df 4 1)
@@ -143,7 +144,7 @@
       #f)
   )
 
-(displayln "18.#f (row-selector df 4 -2)")
+(displayln "18.#f (row-selector data 4 -2)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
   (if (row-selector df 4 -2)
@@ -151,7 +152,7 @@
       #f)
   )
 
-(displayln "19.#t (row-selector df 4 -1)")
+(displayln "19.#t (row-selector data 4 -1)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
   (if (row-selector df 4 -1)
@@ -159,7 +160,7 @@
       #f)
   )
 
-(displayln "20.#t (row-selector df 4 4)")
+(displayln "20.#t (row-selector data 4 4)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
   (if (row-selector df 4 4)
@@ -167,7 +168,7 @@
       #f)
   )
 
-(displayln "21.#t (row-selector df 4 6)")
+(displayln "21.#t (row-selector data 4 6)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
   (if (row-selector df 4 6)

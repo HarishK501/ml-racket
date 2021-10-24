@@ -16,6 +16,8 @@
   (define (all-rows path make-reader)
     (define next-row (make-reader (open-input-file path)))
     (define row (next-row))
+    (define tag (car row))
+    (define parsed null)
 
     (if (null? row)
         (set! m 0)
@@ -25,7 +27,16 @@
     (define (loop)
       (set! n (+ n 1))
       (if (> n 0)
-          (set! row (next-row))
+          ((lambda(x)
+            (set! row (next-row))
+             (set! parsed (filter string->number row))
+          
+             (if (null? parsed)
+                 #t
+                 (set! row (map string->number parsed))
+                 ))
+            1)
+     
           (set! n 0)
           )
              
@@ -81,38 +92,38 @@
 
 (define (row-selector df i [j -1])
 
-      (define (row-selector-helper i)
-      (if (index-within-bounds? df i 'r)
-         (list-ref (car df) i)
+  (define (row-selector-helper i)
+    (if (index-within-bounds? df i 'r)
+        (list-ref (car df) i)
         #f)
-      )
+    )
 
-      (define (row-slicer-helper df i j)
-        (if (> i j)
-            '()
-            (cons (row-selector-helper i) (row-slicer-helper df (+ 1 i) j)))
+  (define (row-slicer-helper df i j)
+    (if (> i j)
+        '()
+        (cons (row-selector-helper i) (row-slicer-helper df (+ 1 i) j)))
+    )
+  
+  (define row null)
+  (cond
+
+    ((or (null? df) (null? (car df)))
+     (error "Dataframe must not be null."))
         
-        )
-      (define row null)
-      (cond
+    ((= j -1) (row-selector-helper i))
 
-        ((or (null? df) (null? (car df)))
-         (error "Dataframe must not be null."))
+    ((not (index-within-bounds? df j 'r))
+     #f)
         
-        ((= j -1) (row-selector-helper i))
+    ((>= j i)
+     (row-slicer-helper df i j)
+     )
 
-        ((not (index-within-bounds? df j 'r))
-         #f)
-        
-        ((>= j i)
-          (row-slicer-helper df i j)
-          )
-
-        (else
-         (raise-argument-error 'row-selector (string-append "[" (number->string i) ", " (number->string (cadr df)) "]") j))
+    (else
+     (raise-argument-error 'row-selector (string-append "[" (number->string i) ", " (number->string (cadr df)) "]") j))
             
-          )
-      )
+    )
+  )
 
 #| (define (string-element-of-list lst str)
   (findf (lambda (arg) (string=? arg str))
@@ -143,14 +154,14 @@
     ;Select by index
 
     ((cond
-      ((or (null? df) (null? (car df)))
-       (error "Dataframe must not be null."))
+       ((or (null? df) (null? (car df)))
+        (error "Dataframe must not be null."))
 
-      ((not (index-within-bounds? df x 'c)))
+       ((not (index-within-bounds? df x 'c)))
 
-      (else
-       (set! col (col-selector-helper (car df) x)))
-     )
+       (else
+        (set! col (col-selector-helper (car df) x)))
+       )
      col)
       
     (else
@@ -159,12 +170,25 @@
     )
   )
 
+(define (no-of-records data)
+  (cadr data)
+  )
+
+(define (no-of-features data)
+  (+ (caddr data) 1)
+  )
+
+(define (get-class labels i)
+  (car (list-ref labels i))
+  )
+
+
 #|
- - Slicing
  - unique values in a column
  - null values
  - 
 
 |#
+
 
 (provide (all-defined-out))

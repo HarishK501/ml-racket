@@ -2,9 +2,13 @@
 
 (require "dataframe-adt.rkt")
 
-(define df (make-dataframe "penguins_preprocessed.csv"))
+(define data (make-dataframe "penguins_data.csv"))
+data
+(define labels (make-dataframe "penguins_labels.csv"))
+labels
+
 ;(define df '())
 ;(define df null)
 ;(null? (car df))
 ;(col-selector df "i_Dream")
-(row-selector df 4 1)
+;(row-selector data 1 4)

@@ -1,5 +1,7 @@
 #lang racket
 
+(require "dataframe-adt.rkt")
+
 (define (euclidean-distance p1 p2)
   (sqrt (for/sum
             ([x1 p1] [x2 p2])
