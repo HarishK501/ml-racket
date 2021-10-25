@@ -183,6 +183,29 @@
   )
 
 
+(define (train-test-split data labels frac)
+
+  
+  (define (frac-to-num)
+    (if (or (not (< frac 1)) (not (> frac 0)))
+        (error "The fraction must be in the range (0,1)")
+        (floor (* frac (no-of-records data)))))
+  
+  ;Gets list of rows, returns rows, number of rows and number of columns
+  (define (data-set-maker list-of-rows)
+    (list list-of-rows (length list-of-rows) (length (car list-of-rows))))
+  
+  ;list containing train-x, test-x, train-y, test-y
+  (define split-datasets (list ))
+
+  (set! split-datasets (append split-datasets (data-set-maker (row-selector data 1 (frac-to-num frac)))))
+  (set! split-datasets (append split-datasets (data-set-maker (row-selector data (+ (frac-to-num frac) 1) (+ 1 (no-of-records data))))))
+  (set! split-datasets (append split-datasets (data-set-maker (row-selector labels 1 (frac-to-num frac)))))
+  (set! split-datasets (append split-datasets (data-set-maker (row-selector labels (+ (frac-to-num frac) 1) (+ 1 (no-of-records data))))))
+  
+  split-datasets)
+
+
 #|
  - unique values in a column
  - null values
