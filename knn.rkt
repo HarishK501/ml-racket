@@ -34,7 +34,7 @@
               (loop (cdr _lst) max-counter max-current))))))
 
 
-
+#|
 (define (min lst)
   (define (min-helper lst acc)
   (cond
@@ -46,31 +46,68 @@
   (if (null? lst)
       #f
       (min-helper (cdr lst) (car lst))))
+|#
+
+(define (sort-by-distance lst)
+  (sort lst (lambda (x y) (< (car x) (car y))))
+  )
+
+(define (k-nearest-pairs lst k)
+  (define (first-n-pairs lst n)
+    (if (eq? n 0)
+        '()
+        (list (car lst)
+              (first-n-pairs (cdr lst) (- n 1))
+              )
+        )
+    )
+  (define sorted-pairs (sort-by-distance lst))
+  (first-n-pairs sorted-pairs k)
+  )
 
 (define (knn-classifier k train-x train-y test)
   (define dp '())
   (define labels '())
-  (for ((i (in-range 1 (no-of-records test))))
-        (set! dp (row-selector test i))
+  (define neighbours '())
+
+  (for ((i (in-range 0 (length test))))
+        (set! dp (list-ref test i))
         (define distances (list ))
     
         ;loop to run through elements of train
-        (for ((j (in-range 0 (no-of-records train-x))))
-           (set! distances (append distances (euclidean-distance dp (row-selector train-x j))))
+        (for ((j (in-range 0 (length train-x))))
+           (set! distances (append distances (list (cons (euclidean-distance
+                                                    dp
+                                                    (list-ref train-x j)
+                                                    )
+                                                   
+                                                   (list-ref train-y j)
+                                                   )
+                                              )
+                                   )
+                 )
            )
-
-        (define neighbors (list ))
-        ;loop to find first k neighbors
-        (for ((j (in-range 0 k)))
-          (define mindist (min distances))
-         (set! neighbors (append neighbors (get-class train-y (+ (index-of distances mindist) j))))
-         (set! distances (remove mindist distances)) 
-          )
-        ;find mode and assign to test object
-        (set! labels (append labels (mode neighbors)))
+    (set! neighbours (k-nearest-pairs distances k))
+    (set! labels (append labels (mode (map cdr neighbours))))
+    
+    
     )
-  labels)
+  labels
+  )
 
+(define (accuracy pred truth)
+  (define (match pred truth res)
+    (if (null? pred)
+        res
+        (if (equal? (car pred) (caar truth))
+            (match (cdr pred) (cdr truth) (+ res 1))
+            (match (cdr pred) (cdr truth) res)
+            )
+        )
+  )
+  (define res (match pred truth 0))
+  (* (/ res (length pred)) 100.0)
+)
 
 (provide (all-defined-out))
 
