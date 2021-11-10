@@ -1,16 +1,6 @@
 #lang racket
 
-(require "dataframe-adt.rkt")
-
-(define (euclidean-distance p1 p2)
-  (sqrt (for/sum
-            ([x1 p1] [x2 p2])
-          (expt (- x1 x2) 2))))
-
-#|(define (manhattan-distance p1 p2)
-  (sqrt (for/sum
-            ([x1 p1] [x2 p2])
-          (expt (- x1 x2) 2))))|#
+(require "distance-metrics.rkt")
 
 ; to find frequency of an element in a list
 (define (freq elem lst)
@@ -32,21 +22,6 @@
           (if (> n max-counter) 
               (loop (cdr _lst) n (car _lst))
               (loop (cdr _lst) max-counter max-current))))))
-
-
-#|
-(define (min lst)
-  (define (min-helper lst acc)
-  (cond
-    ((null? lst) acc)
-    ((< (car lst) acc)
-     (min-helper (cdr lst) (car lst)))
-    (else
-     (min-helper (cdr lst) acc))))
-  (if (null? lst)
-      #f
-      (min-helper (cdr lst) (car lst))))
-|#
 
 (define (sort-by-distance lst)
   (sort lst (lambda (x y) (< (car x) (car y))))
@@ -110,4 +85,20 @@
 )
 
 (provide (all-defined-out))
+
+
+
+#|
+(define (min lst)
+  (define (min-helper lst acc)
+  (cond
+    ((null? lst) acc)
+    ((< (car lst) acc)
+     (min-helper (cdr lst) (car lst)))
+    (else
+     (min-helper (cdr lst) acc))))
+  (if (null? lst)
+      #f
+      (min-helper (cdr lst) (car lst))))
+|#
 
