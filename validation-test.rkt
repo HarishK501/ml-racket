@@ -1,5 +1,6 @@
 #lang racket
 (require "dataframe-adt.rkt")
+(require "knn.rkt")
 
 (define data (make-dataframe "penguins_data.csv"))
 (define labels (make-dataframe "penguins_labels.csv"))
@@ -91,7 +92,7 @@
 (displayln "11. (col-selector data 1)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (col-selector df 1)
+  (if (col-selector data 1)
       #t
       #f)
   )
@@ -99,7 +100,7 @@
 (displayln "12. (col-selector data -2)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (col-selector df -2)
+  (if (col-selector data -2)
       #t
       #f)
   )
@@ -107,7 +108,7 @@
 (displayln "13. (col-selector data \"i_Dream\")")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (col-selector df "i_Dream")
+  (if (col-selector data "i_Dream")
       #t
       #f)
   )
@@ -115,7 +116,7 @@
 (displayln "14. (col-selector data \"abc\")")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (col-selector df "abc")
+  (if (col-selector data "abc")
       #t
       #f)
   )
@@ -139,7 +140,7 @@
 (displayln "17.#f (row-selector data 4 1)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (row-selector df 4 1)
+  (if (row-selector data 4 1)
       #t
       #f)
   )
@@ -147,7 +148,7 @@
 (displayln "18.#f (row-selector data 4 -2)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (row-selector df 4 -2)
+  (if (row-selector data 4 -2)
       #t
       #f)
   )
@@ -155,7 +156,7 @@
 (displayln "19.#t (row-selector data 4 -1)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (row-selector df 4 -1)
+  (if (row-selector data 4 -1)
       #t
       #f)
   )
@@ -163,7 +164,7 @@
 (displayln "20.#t (row-selector data 4 4)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (row-selector df 4 4)
+  (if (row-selector data 4 4)
       #t
       #f)
   )
@@ -171,7 +172,31 @@
 (displayln "21.#t (row-selector data 4 6)")
 (with-handlers ([exn:fail? (lambda (v)
                              ((error-display-handler) (exn-message v) v))])
-  (if (row-selector df 4 6)
+  (if (row-selector data 4 6)
       #t
+      #f)
+  )
+
+(define train-x (row-selector data 1 250))
+(define train-y (row-selector labels 1 250))
+(define test-x (row-selector data 251 333))
+(define test-y (row-selector labels 251 333))
+(define predicted (knn-classifier 3 train-x train-y test-x))
+
+(displayln "22.#t (define predicted (knn-classifier 3 train-x train-y test-x))")
+(with-handlers ([exn:fail? (lambda (v)
+                             ((error-display-handler) (exn-message v) v))])
+  (if predicted
+      predicted
+      #f)
+  )
+
+(define acc (accuracy predicted test-y))
+
+(displayln "23.#t (accuracy predicted test-y)")
+(with-handlers ([exn:fail? (lambda (v)
+                             ((error-display-handler) (exn-message v) v))])
+  (if acc
+      acc
       #f)
   )

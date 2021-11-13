@@ -1,6 +1,7 @@
 #lang racket
 
 (require csv-reading)
+(provide (all-defined-out))
 
 (define (make-dataframe path)
   
@@ -212,6 +213,3 @@
  - pass n m in both test and train dataset
 
 |#
-
-
-(provide (all-defined-out))

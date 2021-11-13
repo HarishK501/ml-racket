@@ -1,6 +1,7 @@
 #lang racket
 
 (require "dataframe-adt.rkt")
+(provide (all-defined-out))
 
 (define (euclidean-distance p1 p2)
   (sqrt (for/sum
@@ -109,5 +110,5 @@
   (* (/ res (length pred)) 100.0)
 )
 
-(provide (all-defined-out))
+
 

@@ -21,6 +21,8 @@
 
 (define predicted (knn-classifier 3 train-x train-y test-x))
 
+predicted
+
 (accuracy predicted test-y)
 
 ;(no-of-records test-x)
