@@ -80,8 +80,14 @@
   )
 
 (define df (make-dataframe "Mall_Customers.csv"))
-
-(define results (kmeans df 5))
+(display "Enter number of clusters (k): ")
+(define k (read))
+;input handling
+(while (not (real? k))
+       (display "Please enter an integer value for k: ")
+       (set! k (read))
+       )
+(define results (kmeans df k))
 (display "Done clustering...\n")
 
 (define clusters (car results))
@@ -93,10 +99,13 @@
   (display (length c))
   )
 
+(define (4-decimal-string n)
+  (real->decimal-string n 4))
+
 (display "\nFinal centroids:")
 (for ([c final-centroids])
   (display "\n")
-  (display c)
+  (display (map 4-decimal-string c))
   )
 
 

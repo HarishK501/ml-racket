@@ -1,5 +1,7 @@
 #lang racket
 
+;(require br/verbose-app)
+
 (define (sum-series lst proc)
     (if (null? lst)
         0
@@ -17,16 +19,37 @@
 (define (sum-of-squares lst)
   (sum-series lst square))
 
-(define (sq-diff x y)
- (- (square x) (square y))
+(define (diff-sq x y)
+ (square (- x y) )
  )
 
-(define(variance lst)
-  (
+(define (sum-of-diff-sq lst m)
+  
    (if (null? lst)
         0
-        (+ (sq-diff (car lst)(mean lst)) (variance (sq-diff (cdr lst)(mean lst))))
-    )
-   )
-  )
+   (+ (diff-sq (car lst) m) (sum-of-diff-sq (cdr lst) m))
+  ))
+
+(define(variance lst)
   
+   (/ (sum-of-diff-sq lst (mean lst))(-(length lst) 1))
+)
+(define (covariance-inner lst1 m1 lst2 m2)
+  (cond
+    [(null? lst1) 0]
+    [(null? lst2) 0]
+    [else (+(*(-(car lst1) m1) (-(car lst2) m2))(covariance-inner (cdr lst1) m1 (cdr lst2) m2 ))]
+  )
+ )
+(define (covariance l1 l2)
+  (/ (covariance-inner l1 (mean l1) l2 (mean l2))(length l1)))
+
+(define (coefficient_b1 l1 l2)
+  (/(covariance l1 l2)(variance l1)))
+
+(define (coefficient_b0 l1 l2)
+  (-(mean l2)(*(coefficient_b1 l1 l2) (mean l1))))
+
+(define (make_pred l1 l2 x)
+   (+ (coefficient_b0 l1 l2)(* x (coefficient_b1 l1 l2)))
+  )
