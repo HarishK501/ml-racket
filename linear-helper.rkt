@@ -53,3 +53,24 @@
 (define (make_pred l1 l2 x)
    (+ (coefficient_b0 l1 l2)(* x (coefficient_b1 l1 l2)))
   )
+
+(define (make_pred_list l1 l2 l3)
+
+  (if (null? l3) '()
+      
+   (cons (make_pred l1 l2 (car l3)) (make_pred_list l1 l2 (cdr l3) ) )
+      )
+  )
+
+(define (sub-list l i j)
+  (if (or(null? l)(eq? i j)) '()
+      (cons(list-ref l i)(sub-list l (+ i 1) j))
+  ))
+
+(define (rmse l1 l2)
+  (if (or(null? l1)(null? l2)) 0
+   (sqrt (/(+(- (car l1) (car l2)) (rmse (cdr l1) (cdr l2)))(length l1))))
+  )
+
+(provide (all-defined-out))
+
