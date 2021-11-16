@@ -4,6 +4,7 @@
 (require "dataframe-adt.rkt")
 (require "list-helper-functions.rkt")
 (require br/cond)
+(require sdraw)
 
 (define (sample df k) ; choosing k random points from dataset for initial centroids
   (define L (no-of-records df))
@@ -108,7 +109,7 @@
   (display (map 4-decimal-string c))
   )
 
-
+(sdraw final-centroids #:null-style '/)
 
 
 

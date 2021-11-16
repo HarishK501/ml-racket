@@ -69,8 +69,12 @@
 
 (define (rmse l1 l2)
   (if (or(null? l1)(null? l2)) 0
-   (sqrt (/(+(- (car l1) (car l2)) (rmse (cdr l1) (cdr l2)))(length l1))))
-  )
+   (sqrt (/(+(square(- (car l1) (car l2))) (rmse (cdr l1) (cdr l2)))(length l1)))))
+
+(define (mae l1 l2)
+  (if (or(null? l1)(null? l2)) 0
+    (/(+(abs(- (car l1) (car l2))) (mae (cdr l1) (cdr l2)))(length l1))))
+
 
 (provide (all-defined-out))
 

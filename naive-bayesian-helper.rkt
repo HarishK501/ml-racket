@@ -18,7 +18,7 @@
             (f (cdr _lst) (+ c 1))
             (f (cdr _lst) c)))))
 
-;Accumulate
+;Accumulate                                       HIGHER ORDER FUNCTION
 (define (accumulate op acc proc lst)
   (cond ((null? lst) acc)
         (else (accumulate op (* acc (proc (car lst))) proc (cdr lst)))))
@@ -38,7 +38,7 @@
   column)
 
 
-;check categorical to check if all columns contain discrete values
+;check categorical to check if all columns contain discrete values      FILTER
 (define (check-categorical df)
 
   (define (check-helper row)
