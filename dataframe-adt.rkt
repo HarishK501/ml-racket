@@ -206,10 +206,25 @@
   
   split-datasets)
 
+(define (all-column-operation df proc1 proc2)
 
-#|
- - unique values in a column
- - null values
- - pass n m in both test and train dataset
+  (define (column-operation col proc1 proc2)
+    (if (null? proc1)
+      (proc2 col)        ; e.g. (stddev col)
+      (proc1 proc2 col)  ; e.g. (apply + col)
+    )
+  )
 
-|#
+  (define (enumerate-column-accumulate-result df i j proc1 proc2) 
+    (if (> i j)
+        '()
+        (cons (column-operation (cdr (col-selector df i)) proc1 proc2) (enumerate-column-accumulate-result df (+ 1 i) j proc1 proc2)))
+  )
+
+  (enumerate-column-accumulate-result df 0 (- (no-of-features df) 1) proc1 proc2)
+)
+
+(define (transpose matrix)                   
+  (for/list ((i (length (list-ref matrix 0)))) ; sends result in form of a list
+    (for/list ((il matrix)) ; access the rows of the matrix                   
+      (list-ref il i)))) ; access all the rows of ith column (il row ith col)
