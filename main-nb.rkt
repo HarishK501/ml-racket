@@ -12,7 +12,7 @@
 (define test-x (row-selector data 1001 1200))
 (define test-y (row-selector labels 1001 1200))
 
-(define model (naive-bayesian-fit train-x train-y true))
+(define model (naive-bayesian-fit train-x train-y false true))
 
 (define predicted (model test-x) )
 

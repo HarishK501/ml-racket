@@ -5,7 +5,7 @@
 
 ;The Bayesian Model Generation. Returns a procedure to predict
 ;The class and conditional probabilites are used here as states
-(define (naive-bayesian-fit Xtrain ytrain (verbose false))
+(define (naive-bayesian-fit Xtrain ytrain (verbose false) (get_cp false))
  
   (check-categorical Xtrain)
   (check-categorical ytrain)
@@ -51,6 +51,7 @@
          ((eq? (car class) (caaar cp)) (caddar cp))
          (else (loc-class-prob class (cdr cp))))) 
 
+  (if get_cp (displayln cond-prob-tab) #f)
   
   (if verbose
       (begin
