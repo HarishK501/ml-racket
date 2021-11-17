@@ -10,7 +10,8 @@
       x))
 
 ;;used for data abstractions
-;;Data abstractions of dataset
+
+;; data helper functions
 
 (define class
   (lambda (x)
@@ -18,7 +19,7 @@
         "Class"
         (car (cdr (cdr (cdr (cdr x))))))))
 
-;; data helper functions
+
 (define (same-class class1 class2)
   (string=? class1 class2))
 
@@ -36,16 +37,16 @@
 (define (append-last lst elm)
   (reverse (append (list elm) (reverse lst))))
 
-;; Data manipulation functions  
-;; calculate mean and standard deviation for data
 
+;; Data manipulation functions  
+
+;; calculate mean and standard deviation for data
 (define (col-means col-sums l)
   (map (lambda(x) (/ x l)) col-sums)
 )
 
 ;; standardize the matrix by calculating z score for each data point
 ; function that takes a NXM data and standardizes the values (z = (x - mean) / std)
-
 (define (standardize-matrix df iris-mean iris-std)
 
   (define (standardize-column col mean std)
@@ -68,19 +69,7 @@
   (enumerate-column-standardize df 0 (- (no-of-features df) 1))
 )
 
-
-(define (string-to-number arg)
-  (if (number? arg)
-      arg
-      (string->number arg)))
-
-(define filter 
-  (lambda (data parm expr [class-t "none"])
-    (if (same-class class-t "none")
-        (foldr (lambda (x y) (if (expr (string-to-number (parm x))) (cons x y) y)) '() data)
-        ;;filter then get the average
-        (foldr (lambda (x y) (if (expr (string-to-number (parm x))) (cons x y) y)) '()
-               (foldr (lambda (x y) (if (same-class (class x) class-t) (cons x y) y)) '() data)))))
+;;Data abstractions of iris dataset
 
 (define petal-width
   (lambda (x)

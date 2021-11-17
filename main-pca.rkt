@@ -7,4 +7,4 @@
 
 (define data (make-dataframe "iris_data.csv"))
 (define labels (make-dataframe "iris_labels.csv"))
-(pca data labels petal-width)
+(principal-component-analysis data labels petal-width)

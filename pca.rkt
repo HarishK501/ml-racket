@@ -12,9 +12,9 @@
 (require "pca-helper.rkt")
 (require "dataframe-adt.rkt")
 
-(provide pca)
+(provide principal-component-analysis)
 
-(define (pca data labels plot-param)
+(define (principal-component-analysis data labels plot-param)
 ;; define an array with the sum of each column 
 (define data-sum (all-column-operation data apply +))
 
@@ -89,7 +89,7 @@
          "Class"
          (car (cdr (cdr (cdr x)))))))
 
-(define filter-3c 
+(define filter-pca-cols 
   (lambda (data parm expr [class-t "none"])
     (if (same-class class-t "none")
         (foldr (lambda (x y) (if (expr (parm x)) (cons x y) y)) '() data)
@@ -99,17 +99,17 @@
                       '() data)))))
 
 (let ((col plot-param))
-(define pca1 (remove-last-col (filter-3c data-pca-classes col identity "Iris-setosa")))
-(define pca2 (remove-last-col (filter-3c data-pca-classes col identity "Iris-versicolor")))
-(define pca3 (remove-last-col (filter-3c data-pca-classes col identity "Iris-virginica")))
+(define pca1 (remove-last-col (filter-pca-cols data-pca-classes col identity "Iris-setosa")))
+(define pca2 (remove-last-col (filter-pca-cols data-pca-classes col identity "Iris-versicolor")))
+(define pca3 (remove-last-col (filter-pca-cols data-pca-classes col identity "Iris-virginica")))
 
 (display "\n\nPlotting the Principle Components\n")
-;; pca of dataset
+;; 3d plot of pca of dataset
 (plot3d (list (points3d pca1 #:sym 'dot #:size 20 #:color 1 #:label "Iris-setosa")
               (points3d pca2 #:sym 'dot #:size 20 #:color 2 #:label "Iris-versicolor")
               (points3d pca3 #:sym 'dot #:size 20 #:color 3 #:label "Iris-virginica"))
         #:altitude 25
-        #:title "3D PCA of iris dataset")
+        #:title "3D PCA of dataset")
 )
 )
 
